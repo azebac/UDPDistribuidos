@@ -10,19 +10,25 @@ package Logica;
  * @author David
  */
 import Recurso.Recurso;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.*;
 
 public class ServidorUDP {
 
     //Instancio los recursos del sistema
     static Recurso recurso = new Recurso();
+    //especificamos el tamaño del paquete
+    static int tamanoPaquete = 256;
 
     public static void main(String argv[]) {
-
+        
+        //me registro en el middleware antes que nada
+        registrarEnMiddleWare();
         DatagramSocket socket;
         boolean fin = false;
-        //especificamos el tamaño del paquete
-        int tamanoPaquete = 256;
+
         //especificamos el puerto de escucha
         int puerto = 6000;
         //Instancio el proceso productor
@@ -79,6 +85,74 @@ public class ServidorUDP {
         } catch (Exception e) {
             System.err.println(e.getMessage());
             System.exit(1);
+        }
+    }
+    
+    /**
+     * Esta funcion se encarga de registrar este servidor en el middleware
+     * para notificar que recursos tiene disponibles
+     */
+    private static void registrarEnMiddleWare() {
+        Boolean registroExitoso = false;
+        String ip = "0.0.0.0";
+        String nombreRecurso = "";
+        while (!registroExitoso) {
+            try {
+                //pido la ip del middleware
+                BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+                System.out.println("Escriba la ip del servidor middleware");
+                ip = in.readLine();
+                InetAddress ipMiddleware = InetAddress.getByName(ip);
+                //pido el nombre del recurso que tiene este servidor
+                System.out.println("Escriba el nombre del recurso que posee");
+                nombreRecurso = in.readLine();
+                
+                //seteo un socket udp y defino el string a enviar
+                DatagramSocket socket;
+                byte[] mensaje_bytes = new byte[tamanoPaquete];
+                String mensaje = "servidor;"+nombreRecurso;
+                mensaje_bytes = mensaje.getBytes();
+                
+                //defino el paquete Paquete
+                DatagramPacket paquete;
+                //creo un string para guardar la respuesta del servidor
+                String respuestaServidorMiddleware = "";
+                //creo un placeholder para la respuesta del paquete del servidor
+                DatagramPacket servPaquete;
+                //defino el tamaño de la respuesta del servidor
+                byte[] RecogerServidor_bytes = new byte[tamanoPaquete];
+                //instancio el socket
+                socket = new DatagramSocket();
+                //convierto en bytes el mensaje a enviar
+                mensaje_bytes = mensaje.getBytes();
+                //lo meto en el paquete y lo envio a la ip a traves del puerto 6001
+                paquete = new DatagramPacket(mensaje_bytes, mensaje.length(), ipMiddleware, 6001);
+                socket.send(paquete);
+
+                RecogerServidor_bytes = new byte[tamanoPaquete];
+
+                //Esperamos a recibir un paquete
+                servPaquete = new DatagramPacket(RecogerServidor_bytes, tamanoPaquete);
+                socket.receive(servPaquete);
+
+                //Convertimos el mensaje recibido en un string
+                respuestaServidorMiddleware = new String(RecogerServidor_bytes).trim();
+                //pregunto si el middleware me acepto
+                if(respuestaServidorMiddleware.equals("registrado"));
+                {
+                    //notifico que fue aceptado
+                    System.out.println("Registrado en el middleware");
+                    //rompo el ciclo infinito
+                    registroExitoso=true;
+                }
+                
+            } catch (IOException e) {
+                System.out.println("Error en la lectura de datos");
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+            
         }
     }
 }
