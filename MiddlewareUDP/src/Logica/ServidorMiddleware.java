@@ -82,8 +82,8 @@ public class ServidorMiddleware {
                 }
                 //Si el mensaje es un cliente que necesita recursos
                 if (mensajeDecodificado[0].equals("recurso")) {
-                    if (solicitarRecursosParaCliente(Integer.parseInt(mensajeDecodificado[2]),
-                            mensajeDecodificado[1])) {
+                    if (solicitarRecursosParaCliente(Integer.parseInt(mensajeDecodificado[1]),
+                            mensajeDecodificado[2])) {
                         //le respondo al cliente que sus recursos fueron aprobados
                         mensajeCliente = "aprobado";
 
@@ -204,7 +204,7 @@ public class ServidorMiddleware {
         String listaFormateada = "";
         //recorro toda mi lista de servidores y voy guardando sus recursos disponibles
         for (Servidor servidor : servidoresDisponibles) {
-            listaFormateada = listaFormateada+servidor.getRecurso()+"|";
+            listaFormateada = listaFormateada+servidor.getRecurso()+";";
         }
         //elimino el ultimo caracter que es un "|" que se agrega por la logica de la
         //concatenacion
