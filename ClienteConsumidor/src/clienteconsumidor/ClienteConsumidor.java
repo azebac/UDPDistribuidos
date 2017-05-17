@@ -16,6 +16,10 @@ public class ClienteConsumidor {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        InterfazCliente ventana= new InterfazCliente(); 
+        ventana.setVisible(true);
+        ventana.setAlwaysOnTop(true);
+        
     }
     
 }
