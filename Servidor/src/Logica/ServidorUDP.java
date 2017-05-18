@@ -14,6 +14,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class ServidorUDP {
 
@@ -65,6 +67,16 @@ public class ServidorUDP {
                 //Obtenemos IP Y PUERTO del cliente
                 puertoCliente = paquete.getPort();
                 ipCliente = paquete.getAddress();
+                
+                //Inicializamos la variable del calendario y obtenemos los valores actuales
+                Calendar calendario = new GregorianCalendar();
+                int hora, minutos, segundos;
+                hora = calendario.get(Calendar.HOUR_OF_DAY);
+                minutos = calendario.get(Calendar.MINUTE);
+                segundos = calendario.get(Calendar.SECOND);
+                //Notificamos lo que solicito
+                System.out.print(hora + ":" + minutos + ":" + segundos + " se enviaron: ");
+                System.out.println(mensaje);
                 
                 //Y notificamos al productor que consumiremos la cantidad solicitada
                 productor.consumirStock(Integer.parseInt(mensaje));

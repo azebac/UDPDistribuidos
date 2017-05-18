@@ -12,6 +12,8 @@ import java.io.InputStreamReader;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
@@ -226,6 +228,16 @@ public class InterfazCliente extends javax.swing.JFrame {
         String seleccionRecurso = (String) jcbRecursos.getSelectedItem();
         //Tomamos la cantidad que selecciono el cliente
         String seleccionCantidad = String.valueOf(jcbCantidad.getValue());
+        //Inicializamos la variable del calendario y obtenemos los valores actuales
+        Calendar calendario = new GregorianCalendar();
+        int hora, minutos, segundos;
+        hora = calendario.get(Calendar.HOUR_OF_DAY);
+        minutos = calendario.get(Calendar.MINUTE);
+        segundos = calendario.get(Calendar.SECOND);
+        //Notificamos lo que hace el cliente
+        System.out.print(hora + ":" + minutos + ":" + segundos+" se solicitaron: ");
+        System.out.println(seleccionCantidad + " " + seleccionRecurso);
+        System.out.println("Al: "+ip);
         
         try {
                 //Convirtiendo de String a Ip

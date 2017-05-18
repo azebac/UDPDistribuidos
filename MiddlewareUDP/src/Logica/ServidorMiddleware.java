@@ -4,6 +4,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  * Este es el main del servidor Middleware que se encargará de manejar la 
@@ -84,6 +86,18 @@ public class ServidorMiddleware {
                 if (mensajeDecodificado[0].equals("recurso")) {
                     if (solicitarRecursosParaCliente(Integer.parseInt(mensajeDecodificado[1]),
                             mensajeDecodificado[2])) {
+                        
+                        //Inicializamos la variable del calendario y obtenemos los valores actuales
+                        Calendar calendario = new GregorianCalendar();
+                        int hora, minutos, segundos;
+                        hora = calendario.get(Calendar.HOUR_OF_DAY);
+                        minutos = calendario.get(Calendar.MINUTE);
+                        segundos = calendario.get(Calendar.SECOND);
+                        //Notificamos lo que solicito
+                        System.out.print(hora + ":" + minutos + ":" + segundos + " al usuario : ");
+                        System.out.println(ipCliente.toString() + " se le aprobaron: ");
+                        System.out.println(mensajeDecodificado[1] + " " + mensajeDecodificado[2]);
+                        
                         //le respondo al cliente que sus recursos fueron aprobados
                         mensajeCliente = "aprobado";
 
@@ -129,6 +143,16 @@ public class ServidorMiddleware {
      * @param recurso Recurso que provee el servidor
      */
     private static void registrarNuevoServidor(InetAddress ip, int puerto, String recurso){
+        //Inicializamos la variable del calendario y obtenemos los valores actuales
+        Calendar calendario = new GregorianCalendar();
+        int hora, minutos, segundos;
+        hora = calendario.get(Calendar.HOUR_OF_DAY);
+        minutos = calendario.get(Calendar.MINUTE);
+        segundos = calendario.get(Calendar.SECOND);
+        //Notificamos lo que hace el cliente
+        System.out.print("A las: "+ hora + ":" + minutos + ":" + segundos + " se registro el servidor: ");
+        System.out.println(ip.toString()+" que funcionará por el puerto:" + puerto);
+        System.out.println("Y proveerá de: "+ recurso);
         Servidor nuevoServidor = new Servidor();
         nuevoServidor.setIp(ip);
         nuevoServidor.setPuerto(puerto);
