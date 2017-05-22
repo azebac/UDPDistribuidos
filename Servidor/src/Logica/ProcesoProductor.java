@@ -17,9 +17,9 @@ import java.util.logging.Logger;
 public class ProcesoProductor  extends Thread {
 
     //Cantidad por la cual se hara restock
-    private final int cantidadRestock = 100;
+    private final int cantidadRestock = 5;
     //cantidad minima necesaria para hacer reestock;
-    private final int cantidadMinimaRestock = 20;
+    private final int cantidadMinimaRestock = 2;
     //El recurso que se consume
     private final Recurso recurso;
     //la cantidad de recursos que necesito
@@ -53,7 +53,7 @@ public class ProcesoProductor  extends Thread {
         //Mientras me queden mas o igual que la cantidad minima o la
         int cantidadEnStock = Recurso.getCantidad();
         while (
-                (Recurso.getCantidad() > recursosNecesarios)){
+                (Recurso.getCantidad() > recursosNecesarios) && (Recurso.getCantidad() > cantidadMinimaRestock)){
             //espero
             wait();
         }
@@ -74,7 +74,7 @@ public class ProcesoProductor  extends Thread {
         int cantidadEnStock = Recurso.getCantidad();
         //seteo cuantos recursos necesito
         recursosNecesarios = cantidad;
-        //"revivo" el hilo    
+        //"revivo" el hilo productor    
         notify();
         while((Recurso.getCantidad() < cantidadMinimaRestock) || 
                 (Recurso.getCantidad() < recursosNecesarios)){

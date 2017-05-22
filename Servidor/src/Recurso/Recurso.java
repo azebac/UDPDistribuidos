@@ -20,7 +20,7 @@ public class Recurso {
  * cuando inicia
  */
     public Recurso() {
-        Recurso.Cantidad = 100;
+        Recurso.Cantidad = 0;
     }
     
     /**
