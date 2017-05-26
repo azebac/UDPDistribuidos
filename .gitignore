@@ -16,3 +16,7 @@ nb-configuration.xml
 *.ear
 /Servidor/nbproject/private/
 /MiddlewareUDP/nbproject/private/
+/JavaApplication5/nbproject/private/
+JavaApplication5/
+
+ClienteConsumidor/nbproject/private/

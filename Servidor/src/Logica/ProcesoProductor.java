@@ -6,6 +6,8 @@
 package Logica;
 
 import Recurso.Recurso;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,6 +27,8 @@ public class ProcesoProductor  extends Thread {
     //la cantidad de recursos que necesito
     private int recursosNecesarios = 0;
     
+
+
     /**
      * Constructor donde instancio el recurso del servidor
      * @param recurso Variable estatica donde el servidor almacena sus recursos
